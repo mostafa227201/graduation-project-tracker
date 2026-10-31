@@ -1,0 +1,100 @@
+### Graduation Project Tracker: manual API tests (VS Code REST Client)
+### Locally the Turnstile TEST secret accepts the dummy token "XXXX.DUMMY.TOKEN.XXXX".
+@api = http://localhost:3000/api
+@turnstile = XXXX.DUMMY.TOKEN.XXXX
+
+### Health check
+GET {{api}}/health
+
+### Register a student (201)
+POST {{api}}/auth/register
+Content-Type: application/json
+X-Turnstile-Token: {{turnstile}}
+
+{ "name": "Test Student", "email": "student1@example.edu", "password": "Password123!" }
+
+### Register trying to become admin (400, field not allowed)
+POST {{api}}/auth/register
+Content-Type: application/json
+X-Turnstile-Token: {{turnstile}}
+
+{ "name": "Sneaky", "email": "sneaky@example.edu", "password": "Password123!", "role": "admin" }
+
+### Log in (200, copy the token into @token below)
+# @name login
+POST {{api}}/auth/login
+Content-Type: application/json
+X-Turnstile-Token: {{turnstile}}
+
+{ "email": "student1@example.edu", "password": "Password123!" }
+
+###
+@token = {{login.response.body.token}}
+
+### Current user (200)
+GET {{api}}/auth/me
+Authorization: Bearer {{token}}
+
+### Current user without token (401)
+GET {{api}}/auth/me
+
+### Supervisors for the drop-down (200)
+GET {{api}}/supervisors
+Authorization: Bearer {{token}}
+
+### Register a project (201) - set supervisorId to a real supervisor id
+POST {{api}}/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Smart Attendance System",
+  "description": "Face recognition attendance for lecture halls.",
+  "teamName": "Team Falcon",
+  "repoUrl": "https://github.com/example/smart-attendance",
+  "supervisorId": 1
+}
+
+### Register a second project with the same student (409)
+POST {{api}}/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Another", "description": "Second project attempt.", "teamName": "Team B", "supervisorId": 1 }
+
+### Invalid project: title too short, bad repo link (400)
+POST {{api}}/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Hi", "description": "Too short title test.", "teamName": "T1", "repoUrl": "http://evil.example", "supervisorId": 1 }
+
+### Sending status from the client (400, field not allowed)
+POST {{api}}/projects
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "title": "Approved already", "description": "Trying to set the status.", "teamName": "Team C", "supervisorId": 1, "supervisionStatus": "accepted" }
+
+### Not JSON (415)
+POST {{api}}/projects
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+hello
+
+### List my projects (200)
+GET {{api}}/projects
+Authorization: Bearer {{token}}
+
+### Search with SQL characters (200, treated as plain text)
+GET {{api}}/projects?search=' OR 1=1 --
+Authorization: Bearer {{token}}
+
+### Invalid status filter (400)
+GET {{api}}/projects?status=approved
+Authorization: Bearer {{token}}
+
+### Another team's project (404): use an id that belongs to a different team
+GET {{api}}/projects/999
+Authorization: Bearer {{token}}

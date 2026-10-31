@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Graduation Project Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="app-header">
+    <div class="header-row">
+        <div>
+            <h1>Graduation Project Tracker</h1>
+            <p id="user-line">Loading...</p>
+        </div>
+        <button type="button" id="logout-button" class="secondary">Log out</button>
+    </div>
+</header>
+
+<main class="container">
+    <!-- Shown to students without a project. The API also refuses other roles (403). -->
+    <section class="panel" id="register-panel" hidden>
+        <h2>Register your project</h2>
+        <form id="project-form" novalidate>
+            <label for="title">Project title</label>
+            <input id="title" name="title" type="text" minlength="3" maxlength="120" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" minlength="10" maxlength="1000" required></textarea>
+
+            <label for="team-name">Team name</label>
+            <input id="team-name" name="teamName" type="text" minlength="2" maxlength="60" required>
+
+            <label for="repo-url">GitHub repository (optional)</label>
+            <input id="repo-url" name="repoUrl" type="url" placeholder="https://github.com/owner/repository">
+
+            <label for="supervisor">Requested supervisor</label>
+            <select id="supervisor" name="supervisorId" required>
+                <option value="">Loading supervisors...</option>
+            </select>
+
+            <button type="submit">Register project</button>
+        </form>
+        <p class="message" id="project-message" aria-live="polite"></p>
+    </section>
+
+    <section class="panel wide">
+        <h2 id="list-heading">Projects</h2>
+        <form id="filter-form" class="filters" role="search">
+            <label for="search">Search title or team</label>
+            <input id="search" name="search" type="search" maxlength="100">
+            <label for="status">Supervision status</label>
+            <select id="status" name="status">
+                <option value="">Any</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="declined">Declined</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+        <p class="message" id="list-message" aria-live="polite"></p>
+        <div id="projects-list"></div>
+    </section>
+</main>
+
+<script src="js/config.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/projects.js" defer></script>
+</body>
+</html>

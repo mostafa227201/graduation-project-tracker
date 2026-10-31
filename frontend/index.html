@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | Graduation Project Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="app-header">
+    <h1>Graduation Project Tracker</h1>
+    <p>Register your project, submit milestones and follow your supervisor's feedback.</p>
+</header>
+
+<main class="container">
+    <section class="panel">
+        <h2>Log in</h2>
+        <form id="login-form" novalidate>
+            <label for="login-email">Email</label>
+            <input id="login-email" name="email" type="email" autocomplete="username" required>
+
+            <label for="login-password">Password</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+
+            <div class="turnstile" id="login-turnstile"></div>
+            <button type="submit">Log in</button>
+        </form>
+        <p class="message" id="login-message" aria-live="polite"></p>
+    </section>
+
+    <section class="panel">
+        <h2>Create a student account</h2>
+        <p class="hint">Supervisor and admin accounts are created by the department.</p>
+        <form id="register-form" novalidate>
+            <label for="register-name">Full name</label>
+            <input id="register-name" name="name" type="text" minlength="2" maxlength="100" autocomplete="name" required>
+
+            <label for="register-email">University email</label>
+            <input id="register-email" name="email" type="email" maxlength="254" autocomplete="email" required>
+
+            <label for="register-password">Password (8 to 72 characters)</label>
+            <input id="register-password" name="password" type="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+
+            <div class="turnstile" id="register-turnstile"></div>
+            <button type="submit">Create account</button>
+        </form>
+        <p class="message" id="register-message" aria-live="polite"></p>
+    </section>
+</main>
+
+<!-- Order matters: config, api helper, page script, then Turnstile (it calls onTurnstileLoad). -->
+<script src="js/config.js" defer></script>
+<script src="js/api.js" defer></script>
+<script src="js/login.js" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" defer></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1f2933;
+}
+
+.app-header {
+    padding: 1.5rem 2rem;
+    background: #203864;
+    color: white;
+}
+
+.app-header h1 {
+    margin: 0 0 0.25rem;
+}
+
+.app-header p {
+    margin: 0;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.panel {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+}
+
+.panel.wide:only-of-type,
+#register-panel[hidden] + .panel.wide {
+    grid-column: 1 / -1;
+}
+
+form {
+    display: grid;
+    gap: 0.75rem;
+}
+
+input, textarea, select, button {
+    width: 100%;
+    padding: 0.75rem;
+    font: inherit;
+}
+
+textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+button {
+    background: #203864;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+button.secondary {
+    width: auto;
+    background: white;
+    color: #203864;
+}
+
+.filters {
+    grid-template-columns: 2fr 1fr auto;
+    align-items: end;
+    margin-bottom: 1rem;
+}
+
+.filters label {
+    grid-row: 1;
+    font-size: 0.85rem;
+}
+
+.filters input, .filters select, .filters button {
+    grid-row: 2;
+}
+
+#projects-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.card {
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.card h3 {
+    margin: 0 0 0.5rem;
+}
+
+.meta, .hint {
+    color: #52606d;
+    font-size: 0.9rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    vertical-align: middle;
+}
+
+.badge-pending { background: #fff4d6; color: #7a5a00; }
+.badge-accepted { background: #dcf5e3; color: #1d6b36; }
+.badge-declined { background: #fde2e1; color: #9b1c1c; }
+
+.message {
+    min-height: 1.25rem;
+    font-weight: 600;
+}
+
+.message[data-kind="error"] { color: #b42318; }
+.message[data-kind="success"] { color: #1d6b36; }
+
+.turnstile {
+    min-height: 65px;
+}
+
+@media (max-width: 760px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+
+    .filters label, .filters input, .filters select, .filters button {
+        grid-row: auto;
+    }
+}
